@@ -1,0 +1,93 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "type": "java",
+      "request": "launch",
+      "name": "Client",
+      "presentation": {
+        "group": "Mod Development - cogito",
+        "order": 0
+      },
+      "projectName": "cogito",
+      "mainClass": "net.neoforged.devlaunch.Main",
+      "args": [
+        "@D:\\newmod\\cogito\\build\\moddev\\clientRunProgramArgs.txt"
+      ],
+      "vmArgs": [
+        "@D:\\newmod\\cogito\\build\\moddev\\clientRunVmArgs.txt",
+        "-Dfml.modFolders\u003dcogito%%D:\\newmod\\cogito\\bin\\main"
+      ],
+      "cwd": "${workspaceFolder}\\run",
+      "env": {},
+      "console": "internalConsole",
+      "shortenCommandLine": "none"
+    },
+    {
+      "type": "java",
+      "request": "launch",
+      "name": "ClientData",
+      "presentation": {
+        "group": "Mod Development - cogito",
+        "order": 1
+      },
+      "projectName": "cogito",
+      "mainClass": "net.neoforged.devlaunch.Main",
+      "args": [
+        "@D:\\newmod\\cogito\\build\\moddev\\clientDataRunProgramArgs.txt"
+      ],
+      "vmArgs": [
+        "@D:\\newmod\\cogito\\build\\moddev\\clientDataRunVmArgs.txt",
+        "-Dfml.modFolders\u003dcogito%%D:\\newmod\\cogito\\bin\\main"
+      ],
+      "cwd": "${workspaceFolder}\\run",
+      "env": {},
+      "console": "internalConsole",
+      "shortenCommandLine": "none"
+    },
+    {
+      "type": "java",
+      "request": "launch",
+      "name": "Server",
+      "presentation": {
+        "group": "Mod Development - cogito",
+        "order": 2
+      },
+      "projectName": "cogito",
+      "mainClass": "net.neoforged.devlaunch.Main",
+      "args": [
+        "@D:\\newmod\\cogito\\build\\moddev\\serverRunProgramArgs.txt"
+      ],
+      "vmArgs": [
+        "@D:\\newmod\\cogito\\build\\moddev\\serverRunVmArgs.txt",
+        "-Dfml.modFolders\u003dcogito%%D:\\newmod\\cogito\\bin\\main"
+      ],
+      "cwd": "${workspaceFolder}\\run",
+      "env": {},
+      "console": "internalConsole",
+      "shortenCommandLine": "none"
+    },
+    {
+      "type": "java",
+      "request": "launch",
+      "name": "ServerData",
+      "presentation": {
+        "group": "Mod Development - cogito",
+        "order": 3
+      },
+      "projectName": "cogito",
+      "mainClass": "net.neoforged.devlaunch.Main",
+      "args": [
+        "@D:\\newmod\\cogito\\build\\moddev\\serverDataRunProgramArgs.txt"
+      ],
+      "vmArgs": [
+        "@D:\\newmod\\cogito\\build\\moddev\\serverDataRunVmArgs.txt",
+        "-Dfml.modFolders\u003dcogito%%D:\\newmod\\cogito\\bin\\main"
+      ],
+      "cwd": "${workspaceFolder}\\run",
+      "env": {},
+      "console": "internalConsole",
+      "shortenCommandLine": "none"
+    }
+  ]
+}
