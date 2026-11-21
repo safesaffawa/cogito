@@ -1,0 +1,137 @@
+owned terminal process. */
+var LocalPtySession = class {
+	terminal;
+	config;
+	motd = "";
+	pid;
+	decoder = new TextDecoder();
+	/** Protocol state only; the sanitizer and bounded buffers own returned text. */
+	emulator;
+	emulatorData;
+	sanitizer;
+	scrollback;
+	outputEnded = Promise.withResolvers();
+	completion;
+	statusValue = { kind: "running" };
+	active;
+	activeTimer;
+	activeDeadlineTimer;
+	activeAbort;
+	interrupting;
+	activeWrite;
+	pollingReady;
+	polling = false;
+	promptSeen = false;
+	promptTextSeen = false;
+	promptTail = "";
+	shellPgid;
+	initializing = false;
+	lastOutputAt = Date.now();
+	closing = false;
+	closePromise;
+	transportFailure;
+	emulatorWrites = Promise.resolve();
+	emulatorWriteDone;
+	emulatorBuffer = "";
+	emulatorWriting = false;
+	responseWrites = Promise.resolve();
+	pendingResponseWrites = 0;
+	emulatorClosed = false;
+	constructor(terminal, config) {
+		this.terminal = terminal;
+		this.config = config;
+		this.pid = terminal.pid;
+		const { Terminal: HeadlessTerminal } = requireHeadless();
+		this.emulator = new HeadlessTerminal({
+			cols: config.cols,
+			rows: config.rows,
+			scrollback: 0
+		});
+		this.emulatorData = this.emulator.onData((data) => {
+			this.pendingResponseWrites += 1;
+			const response = this.responseWrites.then(async () => {
+				await this.terminal.write(data);
+			});
+			this.responseWrites = response.then(() => {
+				this.finishResponseWrite();
+			}, (error) => {
+				this.finishResponseWrite();
+				if (!this.emulatorClosed && !this.closing) this.onTransportFailure(error);
+			});
+		});
+		this.sanitizer = new TerminalSanitizer(config.maxReadBytes);
+		this.scrollback = new BoundedTextBuffer(config.scrollbackMaxBytes, config.scrollbackLines);
+		terminal.output.on("data", this.onTerminalData);
+		terminal.output.once("end", this.onTerminalEnd);
+		terminal.output.once("error", this.onTerminalError);
+		this.completion = terminal.done.then((outcome) => this.onExit(outcome), (error) => {
+			this.onTransportFailure(error);
+		});
+	}
+	/**
+	* Capture startup output through the same readiness contract as later sends.
+	* @param signal - optional cancellation while the shell reaches its first prompt.
+	* @returns Resolves after startup readiness; rejects on exit or readiness timeout.
+	*/
+	async initialize(signal) {
+		this.initializing = true;
+		try {
+			const result = await this.startSend({
+				text: "",
+				submit: false,
+				...signal !== void 0 ? { signal } : {}
+			}).done;
+			if (result.waitReason === "session_exit") throw new TerminalError("PTY shell exited during startup", "STARTUP_EXITED");
+			if (result.waitReason === "timeout") throw new TerminalError("PTY shell did not reach readiness before startup timeout", "STARTUP_TIMEOUT");
+			this.motd = result.viewport;
+		} catch (error) {
+			signal?.throwIfAborted();
+			throw error;
+		} finally {
+			this.initializing = false;
+		}
+	}
+	startSend(request) {
+		if (this.closing) throw new TerminalError("PTY session is closing", "SESSION_CLOSING");
+		if (this.statusValue.kind === "exited") throw new TerminalError("PTY session has exited", "SESSION_EXITED");
+		if (this.active !== void 0) throw new TerminalError(`PTY session already has an active send${this.activeWrite !== void 0 ? " or draining provider write" : this.interrupting !== void 0 ? " or draining foreground interrupt" : ""}`, "SEND_ACTIVE");
+		if (request.signal?.aborted === true) {
+			const aborted = /* @__PURE__ */ new Error("PTY send aborted before write");
+			aborted.name = "AbortError";
+			throw aborted;
+		}
+		const operation = new LocalSendOperation(this.config.maxReadBytes, Date.now(), () => {
+			this.interrupt(operation);
+		});
+		this.active = operation;
+		this.resetReadinessEvidence();
+		if (request.signal !== void 0) {
+			const onAbort = () => {
+				operation.cancel();
+			};
+			request.signal.addEventListener("abort", onAbort, { once: true });
+			this.activeAbort = () => request.signal?.removeEventListener("abort", onAbort);
+		}
+		this.activeDeadlineTimer = setTimeout(() => {
+			if (this.active === operation) this.settleActive("timeout", this.activeWrite !== void 0 || this.interrupting === operation || this.protocolWorkPending());
+		}, this.config.timeoutMs);
+		this.beginSend(operation, request);
+		return operation;
+	}
+	async beginSend(operation, request) {
+		let foreground;
+		try {
+			if (this.protocolWorkPending()) await this.drainTerminalProtocol();
+			const emulatorWrites = this.emulatorWrites;
+			const responseWrites = this.responseWrites;
+			foreground = await this.terminal.inspectForeground();
+			if (this.protocolStateChanged(emulatorWrites, responseWrites)) foreground = await this.inspectForegroundAfterProtocol();
+		} catch (error) {
+			if (this.protocolWorkPending()) await this.drainTerminalProtocol();
+			if (this.active === operation && !this.closing && this.interrupting !== operation) this.failActive(error);
+			return;
+		}
+		try {
+			if (this.active !== operation || this.closing || this.interrupting === operation) return;
+			operation.setInitialForeground(foreground);
+			c

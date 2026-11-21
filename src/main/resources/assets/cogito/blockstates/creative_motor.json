@@ -1,0 +1,30 @@
+{
+  "variants": {
+    "facing=down": {
+      "model": "cogito:block/creative_motor",
+      "x": 180
+    },
+    "facing=east": {
+      "model": "cogito:block/creative_motor",
+      "x": 90,
+      "y": 90
+    },
+    "facing=north": {
+      "model": "cogito:block/creative_motor",
+      "x": 90
+    },
+    "facing=south": {
+      "model": "cogito:block/creative_motor",
+      "x": 90,
+      "y": 180
+    },
+    "facing=up": {
+      "model": "cogito:block/creative_motor"
+    },
+    "facing=west": {
+      "model": "cogito:block/creative_motor",
+      "x": 90,
+      "y": 270
+    }
+  }
+}

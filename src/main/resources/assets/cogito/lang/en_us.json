@@ -1,0 +1,19 @@
+{
+  "itemGroup.cogito": "Cogito",
+  "block.cogito.shaft": "Shaft",
+  "block.cogito.creative_motor": "Creative Motor",
+  "message.cogito.motor.speed": "Speed: %1$s RPM (%2$s, output %3$s)",
+  "message.cogito.shaft.speed": "Speed: %1$s RPM (%2$s, %3$s)",
+  "message.cogito.shaft.idle": "No rotation (%1$s)",
+  "message.cogito.direction.forward": "forward",
+  "message.cogito.direction.reverse": "reverse",
+  "message.cogito.axis.x": "X axis",
+  "message.cogito.axis.y": "Y axis",
+  "message.cogito.axis.z": "Z axis",
+  "message.cogito.facing.north": "north",
+  "message.cogito.facing.south": "south",
+  "message.cogito.facing.east": "east",
+  "message.cogito.facing.west": "west",
+  "message.cogito.facing.up": "up",
+  "message.cogito.facing.down": "down"
+}

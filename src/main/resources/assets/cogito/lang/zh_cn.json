@@ -1,0 +1,19 @@
+{
+  "itemGroup.cogito": "Cogito",
+  "block.cogito.shaft": "传动杆",
+  "block.cogito.creative_motor": "创造马达",
+  "message.cogito.motor.speed": "转速：%1$s RPM（%2$s · 输出朝%3$s）",
+  "message.cogito.shaft.speed": "转速：%1$s RPM（%2$s · %3$s）",
+  "message.cogito.shaft.idle": "未接入动力（%1$s）",
+  "message.cogito.direction.forward": "正向",
+  "message.cogito.direction.reverse": "反向",
+  "message.cogito.axis.x": "X 轴",
+  "message.cogito.axis.y": "Y 轴",
+  "message.cogito.axis.z": "Z 轴",
+  "message.cogito.facing.north": "北",
+  "message.cogito.facing.south": "南",
+  "message.cogito.facing.east": "东",
+  "message.cogito.facing.west": "西",
+  "message.cogito.facing.up": "上",
+  "message.cogito.facing.down": "下"
+}

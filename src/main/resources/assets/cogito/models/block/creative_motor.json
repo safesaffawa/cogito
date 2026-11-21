@@ -1,0 +1,34 @@
+{
+  "parent": "minecraft:block/block",
+  "textures": {
+    "obsidian": "minecraft:block/obsidian",
+    "stone": "minecraft:block/stone",
+    "particle": "minecraft:block/obsidian"
+  },
+  "elements": [
+    {
+      "from": [0, 0, 0],
+      "to": [16, 16, 16],
+      "faces": {
+        "up": { "uv": [0, 0, 16, 16], "texture": "#stone" },
+        "down": { "uv": [0, 0, 16, 16], "texture": "#obsidian" },
+        "north": { "uv": [0, 0, 16, 16], "texture": "#obsidian" },
+        "south": { "uv": [0, 0, 16, 16], "texture": "#obsidian" },
+        "east": { "uv": [0, 0, 16, 16], "texture": "#obsidian" },
+        "west": { "uv": [0, 0, 16, 16], "texture": "#obsidian" }
+      }
+    },
+    {
+      "from": [5, 16, 5],
+      "to": [11, 17, 11],
+      "faces": {
+        "up": { "uv": [5, 5, 11, 11], "texture": "#stone" },
+        "down": { "uv": [5, 5, 11, 11], "texture": "#stone" },
+        "north": { "uv": [5, 0, 11, 1], "texture": "#stone" },
+        "south": { "uv": [5, 0, 11, 1], "texture": "#stone" },
+        "east": { "uv": [5, 0, 11, 1], "texture": "#stone" },
+        "west": { "uv": [5, 0, 11, 1], "texture": "#stone" }
+      }
+    }
+  ]
+}

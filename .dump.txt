@@ -1,0 +1,14 @@
+file:///D:/dshsafe/resources/app.asar/dsh/node_modules/@deepseek-ai/dsh-app-boot/lib/index.js:1855
+		if (template === void 0) throw new Error(`${binName}: profile ${JSON.stringify(name)} does not exist; create it with 'dsh plugin --profile ${name} add <package>'`);
+		                               ^
+
+Error: dsh: profile "tui" does not exist; create it with 'dsh plugin --profile tui add <package>'
+    at loadProfile (file:///D:/dshsafe/resources/app.asar/dsh/node_modules/@deepseek-ai/dsh-app-boot/lib/index.js:1855:34)
+    at prepareProfile (file:///D:/dshsafe/resources/app.asar/dsh/node_modules/@deepseek-ai/dsh/lib/profile-boot-QhDEDXsF.js:219:18)
+    at runDumpConfig (file:///D:/dshsafe/resources/app.asar/dsh/node_modules/@deepseek-ai/dsh/lib/dump-config-CKGOvlAq.js:25:17)
+    at Module.runCli (file:///D:/dshsafe/resources/app.asar/dsh/node_modules/@deepseek-ai/dsh/lib/bin-CwxESKe-.js:240:4)
+    at async runCli (file:///D:/dshsafe/resources/app.asar/dsh/node_modules/@deepseek-ai/dsh/lib/bin.js:21:2)
+    at async runDesktopCli (file:///D:/dshsafe/resources/app.asar/dsh/node_modules/@deepseek-ai/dsh-desktop-host/lib/cli.js:58:2)
+    at async file:///D:/dshsafe/resources/app.asar/dsh/node_modules/@deepseek-ai/dsh-desktop-host/lib/cli.js:77:2
+
+Node.js v24.21.0
